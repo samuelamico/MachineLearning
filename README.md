@@ -1,2 +1,2 @@
 # MachineLearning
-Codes for Topicos Avançados em Informatica ECT
+Codes for Advanced Topics in Informatics
