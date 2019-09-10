@@ -1,6 +1,9 @@
-# Classificador de Aprovação/Reprovação
+# Previsor de situação de risco de alunos
 
 ## Introdução
+O presente trabalho visa explorar o modelo de Machine Learning para solucionar o problema de prever quais alunos precisam de mais ajuda no semestre
+com o objetivo de diminuir a taxa de reprovação.
+
 
 ### Contribuidor
 Samuel Amico Fidelis, aluno da Universidade Federal do Rio Grande do Norte do curso de bacharelado em engenharia mecatrônica. Para eventuais dúvidas, entrar em contato pelos
