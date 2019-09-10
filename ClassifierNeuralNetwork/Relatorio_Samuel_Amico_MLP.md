@@ -64,7 +64,7 @@ Com base em toda a análise estatística e gráfica os valores de atributos esco
 A primeira etapa do treinamento é ler a tabela de dados no formato de Dataframe, utilizando para isso a biblioteca pandas do python. Com os atributos escolhidos pode-se
 inicializar o vetor de entrada com todas as linhas e apenas as colunas referentes aos atributos. O valor de saída é a situação final do aluno, no caso aprovado ou reprovado.
 
-```
+```py
 X = df.loc[:,['qsub1','qsub2','qsub3','igualACeml123','submeteu1','submeteu2','submeteu3','subListaExer23','subListaLab23'] ]
 y = df.loc[:,'situacao']
 ```
@@ -72,7 +72,7 @@ y = df.loc[:,'situacao']
 Os dados são separados em duas classes: treino e teste. A classe de teste é equivalente a 20% dos dados completos e o restante é treino. Os dados de teste foram escolhidos 
 aleatoriamente.
 
-```
+```py
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 ```
@@ -80,7 +80,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 
 Para melhorar o desempenho da rede neural é preciso normalizar os dados:
 
-```
+```py
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
@@ -89,7 +89,7 @@ X_test = sc.transform(X_test)
 
 Após tratar os dados chegou a hora de colocar na rede neural com 5 camadas escondidas, e escolher apenas as saídas com nível de confiança maior que 0.5:
 
-```
+```py
 from sklearn.neural_network import MLPClassifier
 from sklearn.neural_network import MLPRegressor
 
@@ -107,7 +107,7 @@ y_pred = (y_pred > 0.5)
 Para validar nosso modelo com os atributos escolhidos, uma matriz de confusão foi plotada para analisar os falsos positivos, falsos negativos do dataset de teste.
 Com isso foi obtido os seguintes resultados:
 
-```
+```py
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
 
