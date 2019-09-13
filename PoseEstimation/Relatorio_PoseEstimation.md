@@ -5,15 +5,15 @@ O Support Vector Machine (SVM) é um conceito utilizado em Machine Learning para
 
 ### Contribuidores
 
-* Samuel Amico Fidelis, aluno da Universidade Federal do Rio Grande do Norte do curso de bacharelado em engenharia mecatrônica. Para eventuais dúvidas, entrar em contato pelos
+#### Samuel Amico Fidelis, aluno da Universidade Federal do Rio Grande do Norte do curso de bacharelado em engenharia mecatrônica. Para eventuais dúvidas, entrar em contato pelos
 meios abaixo:
 - [Github](https://github.com/samuelamico/MachineLearning)
 - [Site](https://samuelamico.github.io/)
 
-* Leonardo Queiroz, aluno de bacharelado em engenharia mecânica na Universidade Federal do Rio Grande do Norte, contato em:
+#### Leonardo Queiroz, aluno de bacharelado em engenharia mecânica na Universidade Federal do Rio Grande do Norte, contato em:
 - [Github](https://github.com/leocqueiroz)
 
-* Gabriel Varela, aluno da Universidade Federal do Rio Grande do Norte do curso de bacharelado em engenharia mecatrônica. Contato em:
+#### Gabriel Varela, aluno da Universidade Federal do Rio Grande do Norte do curso de bacharelado em engenharia mecatrônica. Contato em:
 - [Github](https://github.com/gabrielvrl)
 - [Site](https://gabrielvrl.github.io/)
 
