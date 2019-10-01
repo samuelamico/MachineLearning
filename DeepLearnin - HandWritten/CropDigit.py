@@ -2,50 +2,72 @@ import cv2
 import numpy as np
 from PreProcess import Preprocess
 
-class Cropped():
+""" 
+Author: Samuel Amico 
+Contact: sam.fst@gmail.com
 
-    def __init__(self,image):
-        self.image = image
-    
-    def CropImage(self,RecP,image):
-        # ROI = [y:y+w,x:x+h]
-        image_crop = []
-        coord_crop = []
-        image_crop_more = []
-        cnt = 0
-        for i in RecP:
-            x,y,w,h = (i[0],i[1],i[2],i[3])
-            im = image[y:h,abs(x):w]
-            if(len(im)!=0):
-                preproce = Preprocess(im)
-                image_process = preproce.Filter()
-                w,h = image_process.shape[:2]
-                image_crop.append(Image.fromarray(image_process))
-                cnt+=1 
-            coord_crop.append((x,y,w,h))
-        return image_crop,coord_crop
-    
-    def FindBox(self):
-        image = cv2.imread(self.image)
-        orig = image.copy()
-        # Convert to Gray
-        image_gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
-        # Get the Edges:  
-        img_sobel = cv2.Sobel(image_gray,cv2.CV_8U,1,0)
-        img_threshold = cv2.threshold(img_sobel,0,255,cv2.THRESH_OTSU+cv2.THRESH_BINARY)
-        # Apply Morphology:
-        element = cv2.getStructuringElement(cv2.MORPH_RECT,ele_size)
-        img_threshold = cv2.morphologyEx(img_threshold[1],cv2.MORPH_CLOSE,element)
-        # Find the Edges:
-        res = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-        if cv2.__version__.split(".")[0] == '3':
-            _, contours, hierarchy = res
-        else:
-            contours, hierarchy = res
+Version alpha 1.0 ---
+-> Load image in the Images Directory
+-> Process Image
+-> Crop Rects in Image
+-> Return the letters
 
-        Rect = [cv2.boundingRect(i) for i in contours if i.shape[0]>100]
-        RectP = [(int(i[0]-i[2]*0.08),int(i[1]-i[3]*0.08),int(i[0]+i[2]*1.1),int(i[1]+i[3]*1.1)) for i in Rect]
+"""
 
-        # CUT the image => Crop the image
-        image_crop,coord_crop,image_crop_more = self.CropImage(RectP,image)
+def FindEdges(image_process,image_orig):
+    res = cv2.findContours(image_process.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+    if cv2.__version__.split(".")[0] == '3':
+        im2, contours, hierarchy = res
+    else:
+        contours, hierarchy = res
+
+    rects = []
+    for c in contours:
+        peri = cv2.arcLength(c, True)
+        approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+        x, y, w, h = cv2.boundingRect(approx)
+        if h >= 16:
+            # if height is enough
+            # create rectangle for bounding
+            rect = [x, y, w, h]
+            rects.append(rect)
+            cv2.rectangle(image_orig, (x, y), (x+w, y+h), (0, 255, 0), 1)
+    return image_orig,rect
+
+
+
+if __name__ == "__main__":
+    # Letter Result Directory
+    path_letter = 'ResultLetter/'
+    cnt = 0
+    # Put the image in the ImageHand directory
+    list_img = glob.glob('Images/*')
+
+    # For All images in directory
+    for files in list_img:
+        img = cv2.imread(files)
+        # Call the class, adjust shadow
+        preproce = Preprocess(img)
+        result_norm_planes = preproce.Shadow_Correction()
+        # Gamma correction:
+        gamma = 0.3
+        gamma_corection = preproce.adjust_gamma(gamma,image)
+        # Erodion image or Sharpin:
+            #img_erosion = preproce.Erosion(gamma_correction)
+        img_erosion = preproce.sharpening(gamma_corection)
+        # Find Letter:
+        image_orig,rect =FindEdges(img_erosion,img)
+        # Save Image:
+        cv2.imwrite('Complete'+str(cnt)+'.png',image_orig)
+        # Number image
+        NI = 0
+        for posi in rect:
+            x,y,w,h = (posi[0],posi[1],posi[2],posi[3])
+            letter_img = img[y:y+h,x:x+w]
+            # Interpolation:
+            letter_img = preproce.resizer(letter_img)
+            cv2.imwrite(path_letter+'Image'+str(cnt)+'Letter'+str(NI)+'.png',letter_img)
+            NI+=1
+        cnt+=1
+
 
