@@ -1,0 +1,54 @@
+## DecisionTree
+
+Árvores de decisão são métodos de aprendizado de máquinas supervisionado não-paramétricos, muito utilizados em tarefas de classificação e regressão. Árvores, de um modo geral em computação, são estruturas de dados formadas por um conjunto de elementos que armazenam informações chamadas nós.
+Em uma árvore de decisão, uma decisão é tomada através do caminhamento a partir do nó raiz, maior nível hierárquico (o ponto de partida) até o nó folha ou terminal.
+A árvore de decisão foi utilizada para comparar os resultados obtidos utilizando o modelo SOM anteriormente.
+
+## Metodologia
+
+### PowerBI
+
+Foi utilizado o PowerBI para construir um painél para que se pudesser analisar e escolher os melhores dados de semanas para treinar o modelo de árvore de decisão. A métrica utilizada levou em consideração as primeiras semanas 
+, pois é preciso descobrir os alunos que estão em dificuldade logo para que se possa dar uma atenção melhor neles, logo em seguida foi analisado no painel PowerBI que as 5 ou 6 primeiras semanas demonstraram
+um comportamento bem diferente entre elas.
+
+O painel do PowerBI está disponivel pelo link: [PowerBI](https://github.com/samuelamico/MachineLearning/tree/master/DecisionTree)
+
+### Experimento e Códigos
+
+Escolhido as semanas para serem treinadas através de funções da biblioteca sklearn:
+
+```py
+from sklearn.model_selection import train_test_split # Import train_test_split function
+
+x = dataset_filter.loc[:,[dataset_filter['semana 1'],dataset_filter['semana 2'],dataset_filter['semana 3'],dataset_filter['semana 4'],dataset_filter['semana 5'],dataset_filter['semana 6']]]
+y = dataset_filter.iloc[:,-1]
+feature_cols = ['semana 1','semana 2','semana 3','semana 4','semana 5','semana 6']
+
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=1) 
+```
+
+Então logo em seguida foi criado o objeto árvore de decisão e utilizando o dataset filtrada para as semanas mais importantes temos:
+
+```py
+LopTree = DecisionTreeClassifier(criterion="entropy", max_depth = 4)
+LopTree # it shows the default parameters
+LopTree.fit(X_train,y_train)
+```
+
+Foi obtida então a seguinte acurácia para o uso de árvore de decisão:
+
+```py
+from sklearn import metrics
+print("Accuracy:",metrics.accuracy_score(y_test, predTree))
+
+Accuracy: 0.4456140350877193
+```
+
+Portanto, a acurácia não foi tão satisfatória, porém foi testado utilizando outras combinações de semanas e percebeu que 
+realmente as seis primeiras semanas eram as melhores possiveis escolhas tomando como base o resultado de acurácia, como ja indicava no painél do PowerBI. Portanto mesmo que a acurácia não tenha sido tão satisfatoria utilizando o método de árvore de decisão
+vale ressaltar a importância deste resultado de acurácia, pois mostra que realmente as seis primeiras semanas são as mais importantes para se obter um melhor resultado de previsão.
+
+A imagem abaixo mostra a árvore de decisão:
+
+[Arvore](https://github.com/samuelamico/MachineLearning/blob/master/DecisionTree/loptree.png)
